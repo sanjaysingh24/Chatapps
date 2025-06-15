@@ -20,7 +20,7 @@ app.use('/api/auth',authrouter)
 const server =  http.createServer(app);
 //initialize socket server;
 initializeSocket(server);
-app.listen(PORT,(err)=>{
+server.listen(PORT,(err)=>{
     connectDb();
     if(err)throw err;
     console.log(`Server is running on port ${PORT}`);

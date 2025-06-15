@@ -6,6 +6,8 @@ import { loginSuccess } from '../Slices/authSlice';
 import { loginValidation } from '../../utils/formvalidation/validation';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { toast } from 'react-toastify';
+import { connectSocket } from '../config/socket';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -20,10 +22,17 @@ const Login = () => {
   const onSubmit = async (formData) => {
     try {
       const res = await loginuser(formData);
-      dispatch(loginSuccess({ user: res.data.user, token: res.data.accessToken }));
-      navigate('/');
+      console.log(res);
+     if(res.isSuccess){
+    
+       dispatch(loginSuccess({ user: res?.user, token: res?.token }));
+       connectSocket(res?.token);
+       toast.success(res?.message);
+      //  navigate('/chat');
+     }
+     
     } catch (err) {
-      alert(err.response?.data?.message || 'Login failed');
+     
     }
   };
 

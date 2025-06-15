@@ -36,6 +36,7 @@ const user = await User.findOne({ email });
    return res.json({
       token,
       isSuccess: true,
+      user:user?.username,
       message: "User logged in successfully",
      
     });
