@@ -1,9 +1,11 @@
 import { Server } from "socket.io";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
+import { Message } from "../models/message.js";
 
 
 let io;
+const onlineUsers = new Map();
 //initialize socket
 export const initializeSocket = (server) => {
   io = new Server(server, {
@@ -21,7 +23,7 @@ export const initializeSocket = (server) => {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       socket.userId = decoded.user.id;
-
+       onlineUsers.set(socket.userId, socket.id);
       // Save socketId and online status to DB
       await User.findByIdAndUpdate(socket.userId, {
         socketId: socket.id,
@@ -36,6 +38,18 @@ export const initializeSocket = (server) => {
 
   io.on('connection', (socket) => {
     console.log(`✅ User connected: ${socket.userId}`);
+    socket.on("check",(data)=>{
+      console.log("Check event received:", data);
+      socket.emit("checkreturn", { message: "Check event received successfully" });
+   
+    })
+    socket.on("sendmessage",async({to,content})=>{
+      const newmsg= await Message.create({
+         sender: socket.userId,
+        receiver: to,
+        content: content
+      })
+    })
 
     socket.on('disconnect', async () => {
       console.log(`❌ User disconnected: ${socket.userId}`);

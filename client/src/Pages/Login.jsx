@@ -28,7 +28,7 @@ const Login = () => {
        dispatch(loginSuccess({ user: res?.user, token: res?.token }));
        connectSocket(res?.token);
        toast.success(res?.message);
-      //  navigate('/chat');
+       navigate('/dashboard');
      }
      
     } catch (err) {

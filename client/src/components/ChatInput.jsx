@@ -1,15 +1,22 @@
 import React, { useState } from 'react';
 import { FiSend } from 'react-icons/fi';
-
+import { connectSocket, getSocket } from '../config/socket';
+import { useEffect } from 'react';
 const ChatInput = () => {
   const [message, setMessage] = useState('');
-
+   let socket = getSocket();
   const handleSend = (e) => {
     e.preventDefault();
     if (!message.trim()) return;
+    
+    socket.emit('check', { content: message });
+    
     console.log("Send:", message);
     setMessage('');
   };
+
+
+
 
   return (
     <form onSubmit={handleSend} className="p-3 border-top bg-white d-flex align-items-center">

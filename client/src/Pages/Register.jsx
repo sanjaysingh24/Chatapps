@@ -6,6 +6,8 @@ import { loginSuccess } from '../Slices/authSlice';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { registerValidation } from '../../utils/formvalidation/validation'; // yup schema
+import { registeruser } from '../../utils/Api/userapi';
+import { toast } from 'react-toastify';
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -19,11 +21,18 @@ const Register = () => {
 
   const onSubmit = async (formData) => {
     try {
-      // const res = await register(formData);
-      dispatch(loginSuccess({ user: res.data.user, token: res.data.accessToken }));
-      navigate('/');
+      const res = await registeruser(formData);
+     
+  if(res.isSuccess){
+   
+    navigate('/');
+    toast.success(res?.message);
+
+  }else{
+    toast.warn(res?.message);
+  }
     } catch (err) {
-      alert(err.response?.data?.message || 'Registration failed');
+      toast.error(res?.message);
     }
   };
 
