@@ -6,7 +6,7 @@ import { authrouter } from './routes/auth.route.js';
 import { connectDb } from './db/connect.js';
 import { initializeSocket } from './socket/index.js';
 dotenv.config();
-
+//update commits
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(cors());
