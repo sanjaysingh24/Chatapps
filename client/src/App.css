@@ -3,3 +3,6 @@
     text-decoration: underline;
 
 }
+.user-list{
+    cursor: pointer;
+}

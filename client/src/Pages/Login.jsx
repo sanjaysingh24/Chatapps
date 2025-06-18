@@ -22,7 +22,7 @@ const Login = () => {
   const onSubmit = async (formData) => {
     try {
       const res = await loginuser(formData);
-      console.log(res);
+  
      if(res.isSuccess){
     
        dispatch(loginSuccess({ user: res?.user, token: res?.token }));

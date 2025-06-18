@@ -20,3 +20,12 @@ try{
 }
 
 }
+
+export const getAlluser = async()=>{
+    try{
+       const response = await axiosInstance.get('/auth/alluser');
+         return response.data;
+    }catch(err){
+        console.log(err);
+    }
+}

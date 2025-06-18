@@ -1,28 +1,51 @@
 import React from 'react';
 
 import ChatInput from './ChatInput';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 const ChatBox = () => {
-  return (
-    <div className="flex-grow-1 d-flex flex-column bg-light">
-      {/* Header */}
-      <div className="d-flex justify-content-between align-items-center p-3 border-bottom bg-white">
-        <h6 className="mb-0">Ravi Kumar</h6>
-        <span className="text-muted">Online</span>
-      </div>
 
-      {/* Messages (Static for now) */}
-      <div className="flex-grow-1 p-3" style={{ overflowY: 'auto' }}>
-        <div className="mb-2 text-end">
-          <span className="badge bg-primary">Hi there 👋</span>
-        </div>
-        <div className="mb-2 text-start">
-          <span className="badge bg-secondary">Hello! How are you?</span>
-        </div>
-      </div>
+const selectedUser = useSelector((state)=>state.auth.selectedUser);
+const username = useSelector((state)=>state.auth.username);
 
-      {/* Input */}
-      <ChatInput/>
-    </div>
+
+
+
+
+const userDetails = async()=>{}
+
+
+
+
+
+
+ return (
+    selectedUser ? (
+      <div className="flex-grow-1 d-flex flex-column bg-light">
+        {/* Header */}
+        <div className="d-flex justify-content-between align-items-center p-3 border-bottom bg-white">
+          <h6 className="mb-0 text-capitalize">{username}</h6>
+          <span className="text-muted">Online</span>
+        </div>
+
+        {/* Messages */}
+        <div className="flex-grow-1 p-3" style={{ overflowY: 'auto' }}>
+          <div className="mb-2 text-end">
+            <span className="badge bg-primary">Hi there 👋</span>
+          </div>
+          <div className="mb-2 text-start">
+            <span className="badge bg-secondary">Hello! How are you?</span>
+          </div>
+        </div>
+
+        {/* Input */}
+        <ChatInput />
+      </div>
+    ) : (
+      <div className="flex-grow-1 d-flex justify-content-center align-items-center bg-light">
+        <h5 className="text-muted">Select a user to start chatting</h5>
+      </div>
+    )
   );
 };
 
