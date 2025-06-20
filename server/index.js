@@ -7,6 +7,7 @@ import { connectDb } from './db/connect.js';
 import { initializeSocket } from './socket/index.js';
 dotenv.config();
 //update commits
+//today commit
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(cors());
