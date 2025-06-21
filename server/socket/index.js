@@ -37,6 +37,7 @@ export const initializeSocket = (server) => {
   });
 
   io.on('connection', (socket) => {
+    console.log(socket?.id);
     console.log(`✅ User connected: ${socket.userId}`);
    
     socket.on("sendmessage",async({data})=>{
@@ -57,6 +58,7 @@ export const initializeSocket = (server) => {
     }
 
     // Optionally: also emit back to sender to update own chat UI instantly
+    socket.emit("mymessage", newmsg); // 👈 emit to sender
   
       }catch(err){
         console.error("Error sending message:", err);

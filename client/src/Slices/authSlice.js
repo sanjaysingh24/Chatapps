@@ -4,7 +4,8 @@ const initialState = {
   user: null,
   token: localStorage.getItem('token') || null,
   selectedUser: null,
-  username:null
+  username:null,
+  id:null
 };
 
 const authSlice = createSlice({
@@ -12,11 +13,13 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginSuccess: (state, action) => {
-      
+      console.log(action.payload);
       state.user = action.payload.user;
       state.token = action.payload.token;
+      state.id = action.payload.id;
       localStorage.setItem('token', action.payload.token);
       localStorage.setItem('username',action.payload.user);
+      localStorage.setItem('id',action.payload.id);
     },
     logout: (state) => {
       state.user = null;

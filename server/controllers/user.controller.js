@@ -22,22 +22,36 @@ export const getAlluser = async(req,res)=>{
     }
 }
 
-export const getUserdetails = async(req,res)=>{
-    const token = req.user;
-    const {id} = token;
-    const { rid }=req.body;
-  try{
-      const  getallmessages = await Message.find({sender:id,reciverid:rid});
-      if(getallmessages.length>0){
-          return res.status(200).json({message: "All messages fetched successfully", data:getallmessages, isSuccess: true});
-        }
-        else{
-            return res.status(200).json({ message: "Start the chat", isSuccess: false });
-        }
+export const getmessages = async (req, res) => {
+  const token = req.user;
+  const { id } = token;      // Current logged-in user ID
+  const { rid } = req.params; // Selected user ID
 
-  }catch(err){
-    return res.json({message: "Error fetching messages", isSuccess: false, error: err.message });
+  try {
+    const getallmessages = await Message.find({
+      $or: [
+        { sender: id, receiver: rid },
+        { sender: rid, receiver: id }
+      ]
+    }).sort({ createdAt: 1 }); // Sort by timestamp ascending
 
+    if (getallmessages.length > 0) {
+      return res.status(200).json({
+        message: "All messages fetched successfully",
+        data: getallmessages,
+        isSuccess: true
+      });
+    } else {
+      return res.status(200).json({
+        message: "Start the chat",
+        isSuccess: false
+      });
+    }
+  } catch (err) {
+    return res.json({
+      message: "Error fetching messages",
+      isSuccess: false,
+      error: err.message
+    });
   }
-
-}
+};

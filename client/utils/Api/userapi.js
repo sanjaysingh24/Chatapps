@@ -29,3 +29,12 @@ export const getAlluser = async()=>{
         console.log(err);
     }
 }
+
+export const messages = async(rid)=>{
+    try{
+       const response = await axiosInstance.get(`/auth/getmessages/${rid}`);
+       return response.data;
+    }catch(err){
+        console.log(err)
+    }
+}

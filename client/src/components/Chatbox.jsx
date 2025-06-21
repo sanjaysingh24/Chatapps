@@ -1,16 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import ChatInput from './ChatInput';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { messages } from '../../utils/Api/userapi';
+import { getSocket } from '../config/socket';
 const ChatBox = () => {
 
 const selectedUser = useSelector((state)=>state.auth.selectedUser);
 const username = useSelector((state)=>state.auth.username);
-
+ let cid = localStorage.getItem('id');
+let currentid;
+const[mymessages,setAllmessages] = useState([]);
+    const socket = getSocket();
 // get all messages 
-const allmessages = async()=>{
+const allmessages = async(selectedUser)=>{
   try{
+    let response = await messages(selectedUser);
+  const{data} = response;
+  if(response.isSuccess){
+    setAllmessages(data);
+    console.log(data);
+  }else{
+    setAllmessages([]);
+    console.log("No messages found");
+  }
     
   }catch(err){
     console.log("Error fetching messages:", err);
@@ -18,11 +32,60 @@ const allmessages = async()=>{
 
 }
 
+useEffect(()=>{
+  allmessages(selectedUser);
+ 
+ 
+ 
+  
+},[selectedUser])
+  useEffect(() => {
 
 
+    if (!socket) return;
+
+    const handleReceiveMessage = (newMessage) => {
+  
+      console.log("Received message:", newMessage);
+    
+     
+  
+        setAllmessages((prev) => [...prev, newMessage]);
+      
+    };
+
+    socket.on('receivemessage', handleReceiveMessage);
+
+    return () => {
+      socket.off('receivemessage', handleReceiveMessage);
+    };
+  }, [socket]);
 
 
+  useEffect(() => {
 
+
+    if (!socket) return;
+
+    const sendMessage = (newMessage) => {
+  
+      console.log("mymessage", newMessage);
+    
+     
+  
+        setAllmessages((prev) => [...prev, newMessage]);
+      
+    };
+
+    socket.on('mymessage', sendMessage );
+
+    return () => {
+      socket.off('mymessage', sendMessage );
+    };
+  }, [socket]);
+
+
+console.log(cid,'user');
 
  return (
     selectedUser ? (
@@ -33,16 +96,31 @@ const allmessages = async()=>{
           <span className="text-muted">Online</span>
         </div>
 
-        {/* Messages */}
-        <div className="flex-grow-1 p-3" style={{ overflowY: 'auto' }}>
-          <div className="mb-2 text-end">
-            <span className="badge bg-primary">Hi there 👋</span>
-          </div>
-          <div className="mb-2 text-start">
-            <span className="badge bg-secondary">Hello! How are you?</span>
-          </div>
-        </div>
+    
+              <div className="flex-grow-1 p-3" style={{ overflowY: 'auto' }}>
+  {mymessages.length > 0 ? (
+  mymessages.map((msg, index) => (
+    <div
+      key={index}
+      className={`mb-2 ${msg.sender === cid ? 'text-end' : 'text-start'}`}
+    >
+      <span
+        className={`badge ${
+          msg.sender === cid ? 'bg-primary text-light' : 'bg-secondary'
+        }`}
+      >
+        {msg.content}
+      </span>
+         <div style={{ fontSize: '10px', textAlign: 'right', opacity: 0.6, marginTop: '4px' }}>
+              {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            </div>
+    </div>
+  ))
+) : (
+  <div className="text-center text-muted">No messages yet</div>
+)}
 
+      </div>
         {/* Input */}
         <ChatInput />
       </div>

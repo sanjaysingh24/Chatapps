@@ -24,8 +24,8 @@ const Login = () => {
       const res = await loginuser(formData);
   
      if(res.isSuccess){
-    
-       dispatch(loginSuccess({ user: res?.user, token: res?.token }));
+      console.log(res);
+       dispatch(loginSuccess({ user: res?.user, token: res?.token,id:res?.id }));
        connectSocket(res?.token);
        toast.success(res?.message);
        navigate('/dashboard');
