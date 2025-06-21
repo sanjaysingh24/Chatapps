@@ -2,21 +2,33 @@ import React, { useState } from 'react';
 import { FiSend } from 'react-icons/fi';
 import { connectSocket, getSocket } from '../config/socket';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 const ChatInput = () => {
   const [message, setMessage] = useState('');
-   let socket = getSocket();
+  const selectedUser = useSelector((state)=>state.auth.selectedUser);
+  let socket = getSocket();
+
+  
   const handleSend = (e) => {
     e.preventDefault();
     if (!message.trim()) return;
-    
-    socket.emit('check', { content: message });
+    let data ={
+      to: selectedUser,
+      message: message.trim(),
+    }
+ 
+    socket.emit('sendmessage', { data });
     
     console.log("Send:", message);
     setMessage('');
   };
 
 
-
+useEffect(()=>{
+socket.on('receivemessage', (data) => {
+  console.log(data?.content,'new message');
+})
+},[])
 
   return (
     <form onSubmit={handleSend} className="p-3 border-top bg-white d-flex align-items-center">

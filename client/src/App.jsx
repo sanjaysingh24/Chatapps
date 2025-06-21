@@ -5,6 +5,8 @@ import './App.css'
 import { RouterProvider } from "react-router-dom";
 import {ToastContainer} from 'react-toastify';
 import { router } from './Routes/router';
+import 'animate.css';
+
 function App() {
   const [count, setCount] = useState(0)
 

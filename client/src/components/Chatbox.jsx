@@ -8,11 +8,16 @@ const ChatBox = () => {
 const selectedUser = useSelector((state)=>state.auth.selectedUser);
 const username = useSelector((state)=>state.auth.username);
 
+// get all messages 
+const allmessages = async()=>{
+  try{
+    
+  }catch(err){
+    console.log("Error fetching messages:", err);
+  }
 
+}
 
-
-
-const userDetails = async()=>{}
 
 
 

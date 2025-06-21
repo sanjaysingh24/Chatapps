@@ -28,7 +28,12 @@ export const getUserdetails = async(req,res)=>{
     const { rid }=req.body;
   try{
       const  getallmessages = await Message.find({sender:id,reciverid:rid});
-      console.log(getallmessages);
+      if(getallmessages.length>0){
+          return res.status(200).json({message: "All messages fetched successfully", data:getallmessages, isSuccess: true});
+        }
+        else{
+            return res.status(200).json({ message: "Start the chat", isSuccess: false });
+        }
 
   }catch(err){
 

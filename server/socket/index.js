@@ -39,20 +39,25 @@ export const initializeSocket = (server) => {
   io.on('connection', (socket) => {
     console.log(`✅ User connected: ${socket.userId}`);
    
-    socket.on("sendmessage",async({to,content})=>{
+    socket.on("sendmessage",async({data})=>{
+     
+      const{to,message} = data;
+     
+
       try{
       const newmsg = await Message.create({
       sender: socket.userId,
       receiver: to,
-      content,
+      content:message,
     });
     const receiverSocketId = onlineUsers.get(to);
+    console.log("Receiver Socket ID:", receiverSocketId);
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("receivemessage", newmsg); // 👈 emit to receiver
     }
 
     // Optionally: also emit back to sender to update own chat UI instantly
-    socket.emit("receivemessage", newmsg);
+  
       }catch(err){
         console.error("Error sending message:", err);
       }
