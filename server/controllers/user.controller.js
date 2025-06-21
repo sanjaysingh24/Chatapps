@@ -36,6 +36,7 @@ export const getUserdetails = async(req,res)=>{
         }
 
   }catch(err){
+    return res.json({message: "Error fetching messages", isSuccess: false, error: err.message });
 
   }
 
