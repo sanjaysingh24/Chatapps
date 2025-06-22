@@ -111,7 +111,7 @@ console.log(cid,'user');
       >
         {msg.content}
       </span>
-         <div style={{ fontSize: '10px', textAlign: 'right', opacity: 0.6, marginTop: '4px' }}>
+         <div className={`${msg.sender === cid ? 'text-end' : 'text-start'}`} style={{ fontSize: '10px', opacity: 0.6, marginTop: '4px' }}>
               {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </div>
     </div>
