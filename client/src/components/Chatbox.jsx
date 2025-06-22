@@ -85,7 +85,6 @@ useEffect(()=>{
   }, [socket]);
 
 
-console.log(cid,'user');
 
  return (
     selectedUser ? (
