@@ -5,7 +5,8 @@ const initialState = {
   token: localStorage.getItem('token') || null,
   selectedUser: null,
   username:null,
-  id:null
+  id:null,
+  online:null
 };
 
 const authSlice = createSlice({
@@ -30,11 +31,12 @@ const authSlice = createSlice({
       localStorage.removeItem('selectedUser');
     },
     selectedUser:(state,action)=>{
-      
-      const {user,username} = action.payload;
+  
+      const {user,username,online} = action.payload;
    
       state.selectedUser = user;
       state.username = username;
+      state.online = online ;
 
       localStorage.setItem('selectedUser',user);
     }

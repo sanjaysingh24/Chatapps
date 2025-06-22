@@ -28,7 +28,7 @@ const fetchalluser = async()=>{
 
 const selectuser = (u)=>{
 
- dispatch(selectedUser({user:u?._id,username:u?.username}));
+ dispatch(selectedUser({user:u?._id,username:u?.username,online:u?.isOnline}));
 }
 useEffect(()=>{
   fetchalluser();
@@ -42,7 +42,16 @@ useEffect(()=>{
         <div key={c?._id} className="d-flex align-items-center px-3 py-2 border-bottom">
           <FaUserCircle size={30} className="me-2" />
           <div className='user-list' onClick={()=>selectuser(c)}>
-            <div>{c.username}</div>
+            <div>{c.username}    <span
+    className={`me-2 rounded-circle`}
+    style={{
+      width: '10px',
+      height: '10px',
+      backgroundColor: c?.isOnline ? 'green' : 'gray',
+      display: 'inline-block'
+    }}
+  ></span> </div>
+          
         
           </div>
         </div>

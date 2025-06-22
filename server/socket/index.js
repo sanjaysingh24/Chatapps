@@ -39,7 +39,22 @@ export const initializeSocket = (server) => {
   io.on('connection', (socket) => {
     console.log(socket?.id);
     console.log(`✅ User connected: ${socket.userId}`);
-   
+    // Typing event
+socket.on('typing', ({ to }) => {
+  const receiverSocketId = onlineUsers.get(to);
+  if (receiverSocketId) {
+    io.to(receiverSocketId).emit('typing', { from: socket.userId });
+  }
+});
+
+// Stop typing event
+socket.on('stoptyping', ({ to }) => {
+  const receiverSocketId = onlineUsers.get(to);
+  if (receiverSocketId) {
+    io.to(receiverSocketId).emit('stoptyping', { from: socket.userId });
+  }
+});
+
     socket.on("sendmessage",async({data})=>{
      
       const{to,message} = data;

@@ -1,7 +1,7 @@
 import {io} from 'socket.io-client';
 let socket;
 export const connectSocket = (token)=>{
-    socket = io('http://localhost:3000',{
+    socket = io(`${import.meta.env.VITE_APP_SOCKET_URL}`,{
         auth:{
             token: token
         },
