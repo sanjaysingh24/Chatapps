@@ -33,3 +33,69 @@
   20% { opacity: 1; transform: translateY(-2px); }
   100% { opacity: 0.2; transform: translateY(0); }
 }
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+.typing-heading {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  animation: typing 3s steps(30, end) forwards;
+}
+/* LandingPage.css */
+
+.hero-section {
+  height: 100vh;
+  background: linear-gradient(120deg, #007bff 0%, #6610f2 100%);
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+}
+
+.text-glow {
+  text-shadow: 0 0 10px #fff, 0 0 20px #ffc107, 0 0 30px #ff9800;
+}
+
+.highlight {
+  color: #ffc107;
+}
+
+.icon-circle {
+  background: #e9ecef;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  border-radius: 50%;
+  font-size: 28px;
+  color: #007bff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-card {
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+
+.cta-section {
+  background: linear-gradient(60deg, #ff9800, #f44336);
+}
+
+.hover-grow {
+  transition: all 0.3s ease-in-out;
+}
+
+.hover-grow:hover {
+  transform: scale(1.05);
+}
+
+.footer {
+  background-color: #212529;
+}
+
