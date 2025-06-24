@@ -99,3 +99,48 @@
   background-color: #212529;
 }
 
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, #1d3557, #457b9d);
+  padding: 100px 20px;
+  color: #fff;
+}
+
+.text-highlight {
+  color: #ffd700;
+}
+
+/* Features */
+.feature-box {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* CTA Section */
+.cta-section {
+  background: linear-gradient(to right, #ffb703, #fb8500);
+  color: #fff;
+}
+
+.cta-section .btn {
+  border-radius: 30px;
+}
+
+/* Footer */
+.footer {
+  background-color: #212529;
+}
+
+/* General Utilities */
+.shadow-sm {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.btn:hover {
+  transform: scale(1.03);
+  transition: 0.2s ease;
+}
