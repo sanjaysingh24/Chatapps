@@ -42,6 +42,7 @@ const Login = () => {
         <h3 className="text-center mb-4">Welcome Back 👋</h3>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-3">
+            {/* // Email input field with validationk */}
             <label>Email Address</label>
             <input
               type="email"
