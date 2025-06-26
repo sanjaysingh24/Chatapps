@@ -5,12 +5,13 @@ import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { messages } from '../../utils/Api/userapi';
 import { getSocket } from '../config/socket';
+import { useRef } from 'react';
 const ChatBox = () => {
 
 const selectedUser = useSelector((state)=>state.auth.selectedUser);
 const username = useSelector((state)=>state.auth.username);
 const online = useSelector((state)=>state.auth.online);
-
+let bottomRef = useRef(null);
  let cid = localStorage.getItem('id');
 let currentid;
 const[mymessages,setAllmessages] = useState([]);
@@ -77,6 +78,7 @@ useEffect(() => {
       setIsTyping(false);
     }
   });
+  socket.emit('messageRead',{from:cid,to:selectedUser});
 
   return () => {
     socket.off('typing');
@@ -105,6 +107,10 @@ useEffect(() => {
     };
   }, [socket]);
 
+
+  useEffect(()=>{
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  },[mymessages])
 
 
  return (
@@ -160,6 +166,7 @@ useEffect(() => {
           </div>
         </div>
       )}
+      <div ref={bottomRef}></div>
     </>
   ) : (
     <div className="text-center text-muted">No messages yet</div>
