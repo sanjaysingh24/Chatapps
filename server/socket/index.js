@@ -29,7 +29,24 @@ export const initializeSocket = (server) => {
         socketId: socket.id,
         isOnline: true
       });
+      const undeliveredMessages = await Message.find({
+        receiver: socket.userId,
+        status: 'sent'
+      });
 
+      for (const msg of undeliveredMessages) {
+        // Mark them delivered
+        await Message.findByIdAndUpdate(msg._id, { status: 'delivered' });
+      
+        // Emit to this user
+        socket.emit('receivemessage', { ...msg.toObject(), status: 'delivered' });
+      
+        // Also tell sender they are now delivered
+        const senderSocketId = onlineUsers.get(msg.sender?.toString());
+        if (senderSocketId) {
+          io.to(senderSocketId).emit('messageDelivered', { messageId: msg._id });
+        }
+      }
       next();
     } catch (err) {
       return next(new Error('Token invalid'));
@@ -37,7 +54,7 @@ export const initializeSocket = (server) => {
   });
 
   io.on('connection', (socket) => {
-    console.log(socket?.id);
+    
     console.log(`✅ User connected: ${socket.userId}`);
     // Typing event
 socket.on('typing', ({ to }) => {
@@ -57,6 +74,7 @@ socket.on('stoptyping', ({ to }) => {
 
 
 socket.on('messageRead',async({from,to})=>{
+  
   await Message.updateMany(
     {sender:from,receiver:to, isRead: false},
     { $set: { isRead: true, delivered: true } }
@@ -78,10 +96,12 @@ socket.on('messageRead',async({from,to})=>{
       sender: socket.userId,
       receiver: to,
       content:message,
+      status: 'sent'
     });
     const receiverSocketId = onlineUsers.get(to);
-    console.log("Receiver Socket ID:", receiverSocketId);
+  
     if (receiverSocketId) {
+      await Message.findByIdAndUpdate(newmsg._id, { status: 'delivered' });
       io.to(receiverSocketId).emit("receivemessage", newmsg); // 👈 emit to receiver
     }
 

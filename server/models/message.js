@@ -15,14 +15,12 @@ const messageSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    isRead:{
-        type: Boolean,
-        default: false
-    },
-    delivered:{
-        type: Boolean,
-        default: false
-    }
+    status: {
+        type: String,
+        enum: ['sent', 'delivered', 'read'],
+        default: 'sent'
+      },
 
-},{timestamps: true});
+},
+{timestamps: true});
 export const Message = mongoose.model('Message', messageSchema);

@@ -136,23 +136,18 @@ useEffect(() => {
           className={`mb-2 ${msg.sender === cid ? 'text-end' : 'text-start'}`}
         >
           <span
-            className={`badge ${
-              msg.sender === cid ? 'bg-primary text-light' : 'bg-secondary'
-            }`}
+      
+            className={`message-bubble text-capitalize ${msg.sender === cid ? 'sent' : 'received'}`}
           >
-            {msg.content}
-          </span>
-          <div
-            className={`${
-              msg.sender === cid ? 'text-end' : 'text-start'
-            }`}
-            style={{ fontSize: '10px', opacity: 0.6, marginTop: '4px' }}
-          >
+            {msg.content} <sub className='text-end ps-2 message-time' >
             {new Date(msg.createdAt).toLocaleTimeString([], {
               hour: '2-digit',
               minute: '2-digit',
             })}
-          </div>
+            </sub>
+          </span>
+          
+          
         </div>
       ))}
 
