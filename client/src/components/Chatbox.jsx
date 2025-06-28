@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { messages } from '../../utils/Api/userapi';
 import { getSocket } from '../config/socket';
 import { useRef } from 'react';
+import { IoCheckmark, IoCheckmarkDone } from 'react-icons/io5';
 const ChatBox = () => {
 
 const selectedUser = useSelector((state)=>state.auth.selectedUser);
@@ -16,6 +17,7 @@ let bottomRef = useRef(null);
 let currentid;
 const[mymessages,setAllmessages] = useState([]);
 const [isTyping, setIsTyping] = useState(false);
+const[isdelivered,setdelivered] = useState(false);
     const socket = getSocket();
 // get all messages 
 const allmessages = async(selectedUser)=>{
@@ -42,7 +44,7 @@ useEffect(()=>{
  
  
   
-},[selectedUser])
+},[selectedUser,socket])
   useEffect(() => {
 
 
@@ -50,14 +52,14 @@ useEffect(()=>{
 
     const handleReceiveMessage = (newMessage) => {
   
-      console.log("Received message:", newMessage);
-    
-     
+
   
         setAllmessages((prev) => [...prev, newMessage]);
-      
+       
+    
     };
-
+   
+  
     socket.on('receivemessage', handleReceiveMessage);
 
     return () => {
@@ -78,11 +80,24 @@ useEffect(() => {
       setIsTyping(false);
     }
   });
+  socket.on('messageDelivered', (data) => {
+      
+    
+  
+  if(data){
+    setdelivered(true);
+  }
+  else{
+    setdelivered(false);
+  }
+  });
+
   socket.emit('messageRead',{from:cid,to:selectedUser});
 
   return () => {
     socket.off('typing');
     socket.off('stoptyping');
+    socket.off('messageDelivered');
   };
 }, [socket, selectedUser]);
 
@@ -111,8 +126,7 @@ useEffect(() => {
   useEffect(()=>{
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   },[mymessages])
-
-
+console.log(isdelivered);
  return (
     selectedUser ? (
       <div className="flex-grow-1 d-flex flex-column bg-light">
@@ -145,6 +159,11 @@ useEffect(() => {
               minute: '2-digit',
             })}
             </sub>
+         {msg.sender===cid &&(
+             <sub className="wa-tick text-end ps-2">
+             {msg.status === 'delivered' || isdelivered===true ? <IoCheckmarkDone size={14} /> : <IoCheckmark size={14} />}
+           </sub>
+         )}
           </span>
           
           

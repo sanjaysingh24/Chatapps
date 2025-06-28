@@ -23,6 +23,8 @@ export const initializeSocket = (server) => {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       socket.userId = decoded.user.id;
+      let senderid = decoded.user.id;
+     
        onlineUsers.set(socket.userId, socket.id);
       // Save socketId and online status to DB
       await User.findByIdAndUpdate(socket.userId, {
@@ -33,19 +35,21 @@ export const initializeSocket = (server) => {
         receiver: socket.userId,
         status: 'sent'
       });
-
+    
       for (const msg of undeliveredMessages) {
         // Mark them delivered
+
         await Message.findByIdAndUpdate(msg._id, { status: 'delivered' });
       
         // Emit to this user
         socket.emit('receivemessage', { ...msg.toObject(), status: 'delivered' });
       
         // Also tell sender they are now delivered
-        const senderSocketId = onlineUsers.get(msg.sender?.toString());
-        if (senderSocketId) {
-          io.to(senderSocketId).emit('messageDelivered', { messageId: msg._id });
-        }
+        const senderSocketId = onlineUsers.get(msg.sender);
+    
+        // if (senderSocketId) {
+        //   io.to(senderSocketId).emit('messageDelivered', { messageId: msg._id });
+        // }
       }
       next();
     } catch (err) {
@@ -54,8 +58,7 @@ export const initializeSocket = (server) => {
   });
 
   io.on('connection', (socket) => {
-    
-    console.log(`✅ User connected: ${socket.userId}`);
+
     // Typing event
 socket.on('typing', ({ to }) => {
   const receiverSocketId = onlineUsers.get(to);
@@ -73,22 +76,23 @@ socket.on('stoptyping', ({ to }) => {
 });
 
 
-socket.on('messageRead',async({from,to})=>{
+// socket.on('messageRead',async({from,to})=>{
   
-  await Message.updateMany(
-    {sender:from,receiver:to, isRead: false},
-    { $set: { isRead: true, delivered: true } }
-  )
+//   await Message.updateMany(
+//     {sender:from,receiver:to, isRead: false},
+//     { $set: { isRead: true, delivered: true } }
+//   )
 
-  const receiverSocketId = onlineUsers.get(to);
-  if(receiverSocketId) {
-    io.to(receiverSocketId).emit('messageRead', {by:from });
-  }
-})
+//   const receiverSocketId = onlineUsers.get(to);
+//   if(receiverSocketId) {
+//     io.to(receiverSocketId).emit('messageRead', {by:from });
+//   }
+// })
 
     socket.on("sendmessage",async({data})=>{
      
       const{to,message} = data;
+   
      
 
       try{
@@ -99,11 +103,22 @@ socket.on('messageRead',async({from,to})=>{
       status: 'sent'
     });
     const receiverSocketId = onlineUsers.get(to);
-  
+
+    const senderSocketId = onlineUsers.get(socket.userId);
+
     if (receiverSocketId) {
       await Message.findByIdAndUpdate(newmsg._id, { status: 'delivered' });
+      
       io.to(receiverSocketId).emit("receivemessage", newmsg); // 👈 emit to receiver
+      io.to(senderSocketId).emit("messageDelivered", newmsg); // 👈 emit to
+     
+      
+      
     }
+
+   
+     
+    
 
     // Optionally: also emit back to sender to update own chat UI instantly
     socket.emit("mymessage", newmsg); // 👈 emit to sender

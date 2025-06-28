@@ -17,6 +17,7 @@ const ChatInput = () => {
     let data ={
       to: selectedUser,
       message: message.trim(),
+      
     }
  
     socket.emit('sendmessage', { data });
