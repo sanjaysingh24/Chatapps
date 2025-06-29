@@ -26,7 +26,7 @@ const allmessages = async(selectedUser)=>{
   const{data} = response;
   if(response.isSuccess){
     setAllmessages(data);
-    console.log(data);
+
   }else{
     setAllmessages([]);
     console.log("No messages found");
@@ -126,7 +126,7 @@ useEffect(() => {
   useEffect(()=>{
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   },[mymessages])
-console.log(isdelivered);
+
  return (
     selectedUser ? (
       <div className="flex-grow-1 d-flex flex-column bg-light">
