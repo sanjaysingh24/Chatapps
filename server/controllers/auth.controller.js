@@ -32,7 +32,12 @@ const user = await User.findOne({ email });
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
     const token = jwt.sign({ user: { id: user._id } }, process.env.JWT_SECRET, { expiresIn: '1d' });
-
+  res.cookie('token', token, {
+    httpOnly:true,
+    secure: true,
+    sameSite: 'strict',
+    maxAge: 24 * 60 * 60 * 1000
+  });
    return res.json({
       token,
       isSuccess: true,
