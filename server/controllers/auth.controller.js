@@ -50,3 +50,20 @@ const user = await User.findOne({ email });
  return res.status(500).json({ message: 'Server error' });
   }
 }
+
+
+export const authuser  = async(req,res)=>{
+   const token = req.cookies.token;
+  try{ 
+     
+     if(token){
+      return res.status(200).json({isSuccess:true, message:'User is authenticated'})
+     }
+     else{
+      return res.status(200).json({ message: 'User not authenticated', isSuccess: false });
+     }
+
+  }catch(err){
+    return res.status(404).json({ message: 'User not login', isSuccess: false });
+  }
+}
