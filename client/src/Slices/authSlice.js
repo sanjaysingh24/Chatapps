@@ -1,13 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit';
-
+import { createSlice,createAsyncThunk, isRejectedWithValue } from '@reduxjs/toolkit';
+import axios  from 'axios';
+import { authuser } from '../../utils/Api/userapi';
 const initialState = {
   user: null,
-  token: localStorage.getItem('token') || null,
+  token: localStorage.getItem('ut') || null,
   selectedUser: null,
   username:null,
   id:null,
-  online:null
+  online:null,
+   status: 'idle',
+  
 };
+
+
 
 const authSlice = createSlice({
   name: 'auth',
@@ -18,7 +23,7 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.id = action.payload.id;
-      
+      localStorage.setItem('ut',action.payload.token);
       localStorage.setItem('username',action.payload.user);
       localStorage.setItem('id',action.payload.id);
     },
@@ -27,8 +32,10 @@ const authSlice = createSlice({
       state.token = null;
       state.selectedUser = null;
       state.username=null;
-      localStorage.removeItem('token');
+      localStorage.removeItem('ut');
       localStorage.removeItem('selectedUser');
+      localStorage.removeItem('id');
+      localStorage.removeItem('username')
     },
     selectedUser:(state,action)=>{
   

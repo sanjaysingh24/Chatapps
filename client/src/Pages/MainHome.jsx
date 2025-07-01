@@ -1,8 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FaRocket, FaLock, FaComments, FaMobileAlt } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { authuser } from '../../utils/Api/userapi';
 
 const LandingPage = () => {
+  const navigate = useNavigate();
+  const checkauth = async()=>{
+    try{
+       let res = await authuser();
+       if(res.isSuccess){
+        navigate('/dashboard')
+        
+       }
+       if(!res.isSuccess){
+        navigate('/')
+       }
+    }catch(err){
+      console.log(err);
+    }
+  }
+  useEffect(()=>{
+    checkauth()
+  },[])
   return (
     <div>
       {/* Hero Section */}

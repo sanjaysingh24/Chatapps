@@ -38,3 +38,21 @@ export const messages = async(rid)=>{
         console.log(err)
     }
 }
+
+export const authuser = async()=>{
+    try{
+       const response = await axiosInstance.get('/auth/authuser');
+       return response.data;
+    }catch(err){
+        console.log(err);
+    }
+}
+
+export const logoutuser  = async()=>{
+    try{
+         let res = await axiosInstance.post('/auth/logout');
+         return res.data;
+    }catch(err){
+        console.log(err);
+    }
+}

@@ -1,5 +1,5 @@
 import express from 'express';
-import { loginuser, registeruser } from '../controllers/auth.controller.js';
+import { authuser, loginuser, logoutuser, registeruser } from '../controllers/auth.controller.js';
 import { getAlluser, getmessages } from '../controllers/user.controller.js';
 import authMiddleware from '../middleware/authmiddleware.js';
 export const authrouter = express.Router();
@@ -7,3 +7,5 @@ export const authrouter = express.Router();
   .post('/login',loginuser)
   .get('/alluser',authMiddleware,getAlluser)
   .get('/getmessages/:rid',authMiddleware,getmessages)
+  .get('/authuser',authuser)
+  .post('/logout',authMiddleware,logoutuser)

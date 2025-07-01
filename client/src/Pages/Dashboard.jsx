@@ -3,9 +3,12 @@ import Sidebar from '../components/sidebar';
 import ChatBox from '../components/Chatbox';
 import { connectSocket } from '../config/socket';
 import SidebarWrapper from '../components/sidebarwrapper';
+
 const Dashboard = () => {
+
+
 useEffect(()=>{
-let token = localStorage.getItem('token');
+let token = localStorage.getItem('ut');
 if(token){
   connectSocket(token);
 }

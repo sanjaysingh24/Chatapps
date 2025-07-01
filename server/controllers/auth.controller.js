@@ -67,3 +67,25 @@ export const authuser  = async(req,res)=>{
     return res.status(404).json({ message: 'User not login', isSuccess: false });
   }
 }
+
+export const logoutuser = async (req, res) => {
+  try {
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: true,         // only in production with HTTPS
+      sameSite: 'strict',
+      path: '/',            // 👈 match with the one used while setting
+    });
+
+    return res.status(200).json({ 
+      message: 'User logged out successfully', 
+      isSuccess: true 
+    });
+  } catch (err) {
+    console.error('Logout error:', err);
+    return res.status(500).json({ 
+      message: 'Internal Server Error', 
+      isSuccess: false 
+    });
+  }
+};
