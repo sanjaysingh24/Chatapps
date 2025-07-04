@@ -47,9 +47,7 @@ export const initializeSocket = (server) => {
         // Also tell sender they are now delivered
         const senderSocketId = onlineUsers.get(msg.sender);
     
-        // if (senderSocketId) {
-        //   io.to(senderSocketId).emit('messageDelivered', { messageId: msg._id });
-        // }
+        
       }
       next();
     } catch (err) {
