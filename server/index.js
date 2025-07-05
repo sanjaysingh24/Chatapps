@@ -7,8 +7,8 @@ import { connectDb } from './db/connect.js';
 import { initializeSocket } from './socket/index.js';
 import cookieParser from "cookie-parser";
 dotenv.config();
-//update commits
-//today commit
+//new commits
+//today commit 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
