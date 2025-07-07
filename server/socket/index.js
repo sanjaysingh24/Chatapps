@@ -14,7 +14,7 @@ export const initializeSocket = (server) => {
       credentials: true,
     }
   });
-
+// as a middleware it works
   io.use(async (socket, next) => {
     const token = socket.handshake.auth?.token;
 
