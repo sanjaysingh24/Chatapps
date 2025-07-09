@@ -35,7 +35,7 @@ export const initializeSocket = (server) => {
         receiver: socket.userId,
         status: 'sent'
       });
-    
+    //get a list of all messages
       for (const msg of undeliveredMessages) {
         // Mark them delivered
 
