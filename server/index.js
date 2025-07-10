@@ -10,6 +10,7 @@ dotenv.config();
 //new commits
 //today commit 
 const app = express();
+//address the port number
 const PORT = process.env.PORT || 3000;
 
 app.use(cors({
