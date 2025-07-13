@@ -14,7 +14,7 @@ export const initializeSocket = (server) => {
       credentials: true,
     }
   });
-
+// as a middleware it works
   io.use(async (socket, next) => {
     const token = socket.handshake.auth?.token;
 
@@ -35,7 +35,7 @@ export const initializeSocket = (server) => {
         receiver: socket.userId,
         status: 'sent'
       });
-    
+    //get a list of all messages
       for (const msg of undeliveredMessages) {
         // Mark them delivered
 
