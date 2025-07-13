@@ -74,18 +74,6 @@ socket.on('stoptyping', ({ to }) => {
 });
 
 
-// socket.on('messageRead',async({from,to})=>{
-  
-//   await Message.updateMany(
-//     {sender:from,receiver:to, isRead: false},
-//     { $set: { isRead: true, delivered: true } }
-//   )
-
-//   const receiverSocketId = onlineUsers.get(to);
-//   if(receiverSocketId) {
-//     io.to(receiverSocketId).emit('messageRead', {by:from });
-//   }
-// })
 
     socket.on("sendmessage",async({data})=>{
      
