@@ -7,16 +7,13 @@ import { connectDb } from './db/connect.js';
 import { initializeSocket } from './socket/index.js';
 import cookieParser from "cookie-parser";
 dotenv.config();
-//new commits
-//today commit 
-//new coding
-//simple commit
+
 const app = express();
 //address the port number
 const PORT = process.env.PORT || 3000;
 
 app.use(cors({
-  origin: 'http://localhost:5173', // your frontend's URL
+  origin: 'https://chatapps-beta.vercel.app', // your frontend's URL
   credentials: true
 }));
 app.use(cookieParser());
